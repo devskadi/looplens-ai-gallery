@@ -15,7 +15,10 @@ const VideoGrid: React.FC<VideoGridProps> = ({ videos, onSelectVideo }) => {
   const numCols = 4;
   const columns: VideoItem[][] = Array.from({ length: numCols }, () => []);
 
-  videos.forEach((video, index) => {
+  // Repeat videos many times to create a massive wall for seamless looping
+  const repeatedVideos = Array.from({ length: 10 }).flatMap(() => videos);
+
+  repeatedVideos.forEach((video, index) => {
     // Basic distribution
     columns[index % numCols].push(video);
   });
@@ -47,11 +50,11 @@ const VideoGrid: React.FC<VideoGridProps> = ({ videos, onSelectVideo }) => {
               className="group relative bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 hover:border-zinc-700 transition-all duration-300 cursor-pointer shadow-lg"
               onClick={() => onSelectVideo(video)}
             >
-              {/* Aspect Ratio Container */}
-              <div className={`relative w-full ${video.aspectRatio === '9:16' ? 'aspect-[9/16]' : 'aspect-video'} bg-zinc-950`}>
+              {/* Container - now adapts to video height */}
+              <div className="relative w-full h-auto bg-zinc-950">
                 <video
                   src={video.src}
-                  className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                  className="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity block"
                   preload="metadata"
                   muted
                   playsInline

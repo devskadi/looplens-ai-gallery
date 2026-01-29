@@ -12,30 +12,26 @@ import {
 
 // Initial dummy data
 const INITIAL_VIDEOS: VideoItem[] = [
-  {
-    id: '1',
-    src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-    title: 'Blooming Flower',
-    description: 'A beautiful timelapse of a flower blooming in nature.',
-    isGenerated: false,
-    aspectRatio: '16:9'
-  },
-  {
-    id: '2',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    title: 'For Bigger Blazes',
-    description: 'Classic demo video showcasing high contrast scenes.',
-    isGenerated: false,
-    aspectRatio: '16:9'
-  },
-  {
-    id: '3',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-    title: 'Elephant Dream',
-    description: 'The first open movie project.',
-    isGenerated: false,
-    aspectRatio: '16:9'
-  }
+  { id: 'v1', src: '/videos/Lark20260129-082153.mp4', title: 'Video 1', description: '', isGenerated: false },
+  { id: 'v2', src: '/videos/Lark20260129-082155.mp4', title: 'Video 2', description: '', isGenerated: false },
+  { id: 'v3', src: '/videos/Lark20260129-082157.mp4', title: 'Video 3', description: '', isGenerated: false },
+  { id: 'v4', src: '/videos/Lark20260129-082159.mp4', title: 'Video 4', description: '', isGenerated: false },
+  { id: 'v5', src: '/videos/Lark20260129-082202.mp4', title: 'Video 5', description: '', isGenerated: false },
+  { id: 'v6', src: '/videos/Lark20260129-082204.mp4', title: 'Video 6', description: '', isGenerated: false },
+  { id: 'v7', src: '/videos/Lark20260129-082206.mp4', title: 'Video 7', description: '', isGenerated: false },
+  { id: 'v8', src: '/videos/Lark20260129-082239.mp4', title: 'Video 8', description: '', isGenerated: false },
+  { id: 'v9', src: '/videos/Lark20260129-082243.mp4', title: 'Video 9', description: '', isGenerated: false },
+  { id: 'v10', src: '/videos/Lark20260129-082245.mp4', title: 'Video 10', description: '', isGenerated: false },
+  { id: 'v11', src: '/videos/Lark20260129-082247.mp4', title: 'Video 11', description: '', isGenerated: false },
+  { id: 'v12', src: '/videos/Lark20260129-082249.mp4', title: 'Video 12', description: '', isGenerated: false },
+  { id: 'v13', src: '/videos/Lark20260129-082250.mp4', title: 'Video 13', description: '', isGenerated: false },
+  { id: 'v14', src: '/videos/Lark20260129-082254.mp4', title: 'Video 14', description: '', isGenerated: false },
+  { id: 'v15', src: '/videos/Lark20260129-082257.mp4', title: 'Video 15', description: '', isGenerated: false },
+  { id: 'v16', src: '/videos/Lark20260129-082258.mp4', title: 'Video 16', description: '', isGenerated: false },
+  { id: 'v17', src: '/videos/Lark20260129-082300.mp4', title: 'Video 17', description: '', isGenerated: false },
+  { id: 'v18', src: '/videos/Lark20260129-082302.mp4', title: 'Video 18', description: '', isGenerated: false },
+  { id: 'v19', src: '/videos/Lark20260129-082305.mp4', title: 'Video 19', description: '', isGenerated: false },
+  { id: 'v20', src: '/videos/Lark20260129-082308.mp4', title: 'Video 20', description: '', isGenerated: false },
 ];
 
 const App: React.FC = () => {
@@ -56,8 +52,19 @@ const App: React.FC = () => {
     const scroll = (time: number) => {
       if (!lastTime) lastTime = time;
 
-      if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 2) {
-        scrollContainer.scrollTop = 0;
+      const currentScroll = scrollContainer.scrollTop;
+      const maxScroll = scrollContainer.scrollHeight;
+
+      // Set initial position to skip the top gaps if starting for the first time
+      if (currentScroll === 0 && maxScroll > 0) {
+        scrollContainer.scrollTop = maxScroll * 0.2;
+        animationFrameId = requestAnimationFrame(scroll);
+        return;
+      }
+
+      // Loop point: jump from 80% back to 20% to stay in the identical repeating middle section
+      if (currentScroll + scrollContainer.clientHeight >= maxScroll * 0.8) {
+        scrollContainer.scrollTop = maxScroll * 0.2;
       } else {
         scrollContainer.scrollTop += scrollSpeed;
       }
@@ -82,8 +89,7 @@ const App: React.FC = () => {
         src: URL.createObjectURL(file),
         title: file.name.replace(/\.[^/.]+$/, ""),
         description: `Uploaded from local: ${(file.size / 1024 / 1024).toFixed(2)} MB`,
-        isGenerated: false,
-        aspectRatio: '16:9'
+        isGenerated: false
       }));
       setVideos((prev) => [...newVideos, ...prev]);
     }

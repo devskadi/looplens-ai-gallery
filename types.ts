@@ -4,7 +4,7 @@ export interface VideoItem {
   title: string;
   description?: string;
   isGenerated: boolean;
-  aspectRatio: '16:9' | '9:16';
+  aspectRatio?: '16:9' | '9:16';
   thumbnail?: string;
 }
 
